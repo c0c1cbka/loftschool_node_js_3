@@ -1,4 +1,11 @@
 {
     "port":"3000",
-    "public_path":"../build/"
+    "public_path":"../build/",
+
+    "mongo_uri":"mongodb+srv://cluster0.4citq.mongodb.net",
+    "mongo_user":"admin",
+    "mongo_pass":"s0PMJFQjigkSkQXw",
+    "mongo_dbName":"cluster0",
+
+    "JWT_key":"project"
 }
