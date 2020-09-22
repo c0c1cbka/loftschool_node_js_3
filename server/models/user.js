@@ -47,12 +47,12 @@ const userSchema = new Schema({
     }
 });
 
-userSchema.methods.serPassword = (password)=>{
-    this.password = bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
+userSchema.methods.setPassword = function (pass){
+    this.password = bCrypt.hashSync(pass, bCrypt.genSaltSync(10), null);
 }
 
-userSchema.methods.validPassword = (password)=>{
-    return bCrypt.compareSync(password, this.password);
+userSchema.methods.validPassword = function(pass){
+    return bCrypt.compareSync(pass, this.password);
 }
 
 const User = mongoose.model('user',userSchema);

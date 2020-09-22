@@ -1,11 +1,15 @@
 {
-    "port":"3000",
-    "public_path":"../build/",
+    "port": "3000",
+    "public_path": "../build/",
 
-    "mongo_uri":"mongodb+srv://cluster0.4citq.mongodb.net",
-    "mongo_user":"admin",
-    "mongo_pass":"s0PMJFQjigkSkQXw",
-    "mongo_dbName":"cluster0",
+    "mongo_uri": "mongodb+srv://cluster0.4citq.mongodb.net",
+    "mongo_user": "admin",
+    "mongo_pass": "s0PMJFQjigkSkQXw",
+    "mongo_dbName": "cluster0",
 
-    "JWT_key":"project"
+    "JWT_key": "project",
+
+    "time_live_token": 1,
+    "time_live_refresh_token": 5,
+    "secret_token":"secret"
 }

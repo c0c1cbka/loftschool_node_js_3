@@ -34,3 +34,42 @@ module.exports.findUserByName = (username)=>{
 module.exports.findUserById = (id)=>{
     return User.findOne({id});
 }
+
+module.exports.createNewUser = async(obj)=>{
+    if(!obj.username || !obj.password){
+        throw 'Обязательное поле не заполнено';
+    }
+    try{
+        var user = await this.findUserByName(obj.username);
+    }catch{
+        null;
+    }
+
+    if(user){
+        throw 'username занят';
+    }
+
+    let newUser = new User({
+        firstName: obj.firstName,
+        image: null,
+        middleName: obj.middleName,
+        permission: {
+            chat: { C: true, R: true, U: true, D: true },
+            news: { C: true, R: true, U: true, D: true },
+            settings: { C: true, R: true, U: true, D: true }
+        },
+        surName: obj.surName,
+        username: obj.username
+    });
+
+    newUser.setPassword(obj.password);
+
+    try{
+        await newUser.save();
+    }catch(err){
+        console.error(err);
+        throw 'Обратитесь к администратору';
+    }
+    
+    return newUser;
+}

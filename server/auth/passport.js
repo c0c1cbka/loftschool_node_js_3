@@ -9,7 +9,7 @@ const params = {
     jwtFromRequest: (req) => {
         let token = null;
         if (req && req.headers) {
-            token = req.headers['authorization']
+            token = req.headers['authorization'];
         }
         return token;
     }
@@ -21,7 +21,7 @@ passport.use(new LocalStrategy(async (username, password, done) => {
     } catch (err){
         return done(err);
     }
-
+    
     if(user && user.validPassword(password)){
         done(null, user);
     }else{
