@@ -43,7 +43,12 @@ let refreshToken = (refreshToken, secret)=>{
     return createToken(user, secret);
 };
 
+let getUserIdByToken = (accessToken, secret)=>{
+    return jwt.verify(accessToken, secret).user.id;
+}
+
 module.exports = {
     createToken,
-    refreshToken
+    refreshToken,
+    getUserIdByToken
 }

@@ -54,8 +54,9 @@ const registration = async(req,res,next)=>{
 
 const refreshToken = (req,res,next)=>{
     const refresh = req.headers['authorization'];
-    const tokens = token.refreshToken(refresh, config.secret_token);
-    res.json(tokens);
+    const tokens = token.refreshTokens(refresh, config.secret_token);
+
+    res.json({...tokens});
 }
 
 module.exports = {
