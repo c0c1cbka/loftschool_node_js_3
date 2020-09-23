@@ -10,4 +10,9 @@ router.post('/registration',controllerAuth.registration);
 router.post('/login', controllerAuth.login);
 router.post('/refresh-token', controllerAuth.refreshToken);
 
+router.get('/profile',controllerAuth.auth,(req,res,next)=>{
+    console.log('/profile',req.user);
+    res.json({status:1});
+});
+
 module.exports = router;
