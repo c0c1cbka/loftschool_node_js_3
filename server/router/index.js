@@ -11,5 +11,10 @@ router.post('/login', controllerAuth.login);
 router.post('/refresh-token', controllerAuth.refreshToken);
 
 router.get('/profile'/*,controllerAuth.auth*/,controllerUsers.getProfile);
+router.patch('/profile'/*,controllerAuth.auth*/,controllerUsers.patchProfile);
+router.get('/users'/*,controllerAuth.auth*/,controllerUsers.getUsers);
+router.delete('/users/:id'/*,controllerAuth.auth*/,controllerUsers.delUser);
+router.patch('/users/:id/permission'/*,controllerAuth.auth*/,controllerUsers.patchPermissionUser);
+
 
 module.exports = router;

@@ -20,20 +20,15 @@ const auth = (req, res, next) => {
 };
 
 const login = (req,res,next)=>{
-    passport.authenticate('local', {session:false},(err, user, info)=>{
+    passport.authenticate('local', {session:false},async (err, user, info)=>{
         if(err){
             next(err);
         }
         if(user){
             const tokens = token.createToken(user,config.secret_token);
+            let userObj = await db.getUserObjById(user._id);
             res.json({
-                firstName: user.firstName,
-                id: user._id,
-                image: user.image,
-                middleName: user.middleName,
-                permission: user.permission,
-                surName: user.surName,
-                username: user.username,
+                ...userObj,
                 ...tokens
             });
         }else{
@@ -54,7 +49,7 @@ const registration = async(req,res,next)=>{
 
 const refreshToken = (req,res,next)=>{
     const refresh = req.headers['authorization'];
-    const tokens = token.refreshTokens(refresh, config.secret_token);
+    const tokens = token.refreshToken(refresh, config.secret_token);
 
     res.json({...tokens});
 }
