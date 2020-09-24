@@ -5,7 +5,7 @@ const config = require('../config.json');
 const db = require('../models');
 
 const params = {
-    secretOrKey: config.JWT_key,
+    secretOrKey: config.secret_token,//config.JWT_key,
     jwtFromRequest: function (req) {
         let token = null;
         if (req && req.headers) {
@@ -16,7 +16,6 @@ const params = {
 }
 
 passport.use(new LocalStrategy(async (username, password, done) => {
-    console.log('LocalStrategy',username, password);
     try{
         var user = await db.findUserByName(username);
     } catch (err){
@@ -31,9 +30,8 @@ passport.use(new LocalStrategy(async (username, password, done) => {
 }));
 
 passport.use(new JWTStrategy(params, async (payload, done) => {
-    console.log('JWTStrategy',payload);
     try{
-        var user = await db.findUserById(payload.id);
+        var user = await db.findUserById(payload.user.id);
     }catch(err){
         return done(err);
     }
@@ -41,6 +39,6 @@ passport.use(new JWTStrategy(params, async (payload, done) => {
     if(user){
         done(null, {id: user.id});
     }else{
-        done(new Error('User not found'));
+        done(null, false);
     }
 }));

@@ -78,7 +78,7 @@ const patchProfile = async (req, res, next) => {
 
 const getUsers = async (req, res, next) => {
     try {
-        var users = await db.getAllUsers();
+        var users = await db.getAllUsersObj();
     } catch (err) {
         res.status(400).json({
             err
