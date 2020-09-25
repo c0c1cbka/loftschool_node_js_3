@@ -1,13 +1,7 @@
-// const formidable = require('formidable');
-// const fs = require('fs');
-// const path = require('path');
-
 const token = require('../auth/token');
 const models = require('../models');
 const db = require('../models');
 const config = require('../config.json');
-
-// const upload = path.join(process.cwd(), '/build/assets/img/');
 
 async function getAllNews(req, res, next){
     try {

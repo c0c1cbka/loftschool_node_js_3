@@ -37,7 +37,6 @@ function findUserByName (username){
 }
 
 function findUserById (id){
-    //return User.findOne({id});
     return User.findById(id);
 }
 

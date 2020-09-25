@@ -1,4 +1,3 @@
-const { Title } = require('@material-ui/icons');
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
