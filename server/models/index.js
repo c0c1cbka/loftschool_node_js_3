@@ -172,7 +172,7 @@ async function getAllUsersObj(){
 
 async function deleteUser(userId){
     try {
-        await User.findOneAndRemove({ id: id });
+        await User.findOneAndRemove({ _id: userId });
     } catch (error) {
         throw 'обратитесь к администратору'
     }
@@ -258,7 +258,7 @@ async function getAllNewsObj(){
 }
 
 async function createNewNews(userId, title, text){
-    if(!obj.text || !obj.title ){
+    if(!text || !title ){
         throw 'Обязательые поля не заполнены';
     }
 
@@ -293,7 +293,7 @@ async function createNewNews(userId, title, text){
 
 async function deleteNews(newsId){
     try {
-        await News.findOneAndRemove({ id: newsId });
+        await News.findOneAndRemove({ _id: newsId });
     } catch (error) {
         throw 'обратитесь к администратору'
     }
@@ -307,18 +307,18 @@ async function updateNews(newsId, text, title){
     }
 
     try{
-        await User.findByIdAndUpdate({_id:newsId},newsUpdObj);
+        await News.findByIdAndUpdate({_id:newsId},newsUpdObj);
     }catch(err){
         throw err;
     }
 
     try{
-        userUpd = await getNewsObjById(newsId);
+        newsUpd = await getNewsObjById(newsId);
     }catch(err){
         throw err;
     }   
 
-    return userUpd;
+    return newsUpd;
 }
 
 /*----------------------------------------------------------------*/

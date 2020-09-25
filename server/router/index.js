@@ -16,5 +16,9 @@ router.get('/users',controllerAuth.auth,controllerUsers.getUsers);
 router.delete('/users/:id',controllerAuth.auth,controllerUsers.delUser);
 router.patch('/users/:id/permission',controllerAuth.auth,controllerUsers.patchPermissionUser);
 
+router.get('/news',controllerAuth.auth,controllerNews.getAllNews);
+router.post('/news',controllerAuth.auth,controllerNews.createNews);
+router.patch('/news/:id',controllerAuth.auth,controllerNews.patchNews);
+router.delete('/news/:id',controllerAuth.auth,controllerNews.deleteNews);
 
 module.exports = router;

@@ -100,16 +100,7 @@ const delUser = async (req, res, next)=>{
         return;
     }
 
-    try {
-        var users = await db.getAllUsers();
-    } catch (err) {
-        res.status(400).json({
-            err
-        });
-        return;
-    }
-
-    res.json(users);
+    await getUsers(req, res, next);
 }
 
 const patchPermissionUser = async (req, res, next)=>{
