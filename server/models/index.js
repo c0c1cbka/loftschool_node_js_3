@@ -136,7 +136,7 @@ async function updateUserData(userId, obj) {
     let genPassword = new User;
     genPassword.setPassword(obj.newPassword);
 
-    userUpdObj = {
+    let userUpdObj = {
         firstName: obj.firstName,
         image: obj.avatar,
         middleName: obj.middleName,
@@ -153,7 +153,7 @@ async function updateUserData(userId, obj) {
     }
 
     try {
-        userUpd = await getUserObjById(userId);
+        var userUpd = await getUserObjById(userId);
     } catch (err) {
         throw err;
     }
@@ -181,7 +181,7 @@ async function getAllUsersObj() {
 
     for (let i = 0; i < users.length; i++) {
         try {
-            userObj = await getUserObjById(users[i]._id);
+            var userObj = await getUserObjById(users[i]._id);
         } catch (err) {
             throw err;
         }
@@ -272,7 +272,7 @@ async function getAllNewsObj() {
 
     for (let i = 0; i < news.length; i++) {
         try {
-            newsObj = await getNewsObjById(news[i]._id);
+            var newsObj = await getNewsObjById(news[i]._id);
         } catch (err) {
             throw err;
         }
@@ -328,7 +328,7 @@ async function deleteNews(newsId) {
 
 async function updateNews(newsId, text, title) {
 
-    newsUpdObj = {
+    let newsUpdObj = {
         text: text,
         title: title
     }
@@ -342,7 +342,7 @@ async function updateNews(newsId, text, title) {
     }
 
     try {
-        newsUpd = await getNewsObjById(newsId);
+        var newsUpd = await getNewsObjById(newsId);
     } catch (err) {
         throw err;
     }
