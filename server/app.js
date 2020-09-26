@@ -3,8 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const http = require('http');
 
-connectSocket = require('./socket');
-
+const connectSocket = require('./socket');
 
 
 const config = JSON.parse(fs.readFileSync(path.join(__dirname,'config.json'), 'utf8'));

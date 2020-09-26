@@ -1,8 +1,11 @@
-const { join } = require('lodash');
+const {
+    join
+} = require('lodash');
 const mongoose = require('mongoose');
 const config = require('../config.json');
 const User = require('./user');
 const News = require('./news');
+const Chat = require('./chat');
 
 mongoose.Promise = global.Promise;
 
@@ -17,41 +20,43 @@ mongoose.connect(config.mongo_uri, {
     dbName: config.mongo_dbName
 });
 
-mongoose.connection.on('connected', ()=>{
+mongoose.connection.on('connected', () => {
     console.log('Mongoose connected sucess');
 });
 
-mongoose.connection.on('error', (err)=>{
+mongoose.connection.on('error', (err) => {
     console.log(`Mongoose connected error: ${err}`);
 });
 
-mongoose.connection.on('disconnected', (err)=>{
+mongoose.connection.on('disconnected', (err) => {
     console.log('Mongoose connected disconnected');
 });
 
 /*----------------------------------------------------------------*/
 /*----------------Работа с User-----------------------------------*/
 
-function findUserByName (username){
-    return User.findOne({username});
+function findUserByName(username) {
+    return User.findOne({
+        username
+    });
 }
 
-function findUserById (id){
+function findUserById(id) {
     return User.findById(id);
 }
 
-async function createNewUser(obj){
-    if(!obj.username || !obj.password){
+async function createNewUser(obj) {
+    if (!obj.username || !obj.password) {
         throw 'Обязательное поле не заполнено';
     }
-    try{
+    try {
         var user = await findUserByName(obj.username);
-    }catch(err){
+    } catch (err) {
         console.error(err);
         throw 'Обратитесь к администратору';
     }
 
-    if(user){
+    if (user) {
         throw 'username занят';
     }
 
@@ -60,9 +65,24 @@ async function createNewUser(obj){
         image: null,
         middleName: obj.middleName,
         permission: {
-            chat: { C: true, R: true, U: true, D: true },
-            news: { C: true, R: true, U: true, D: true },
-            settings: { C: true, R: true, U: true, D: true }
+            chat: {
+                C: true,
+                R: true,
+                U: true,
+                D: true
+            },
+            news: {
+                C: true,
+                R: true,
+                U: true,
+                D: true
+            },
+            settings: {
+                C: true,
+                R: true,
+                U: true,
+                D: true
+            }
         },
         surName: obj.surName,
         username: obj.username
@@ -70,24 +90,24 @@ async function createNewUser(obj){
 
     newUser.setPassword(obj.password);
 
-    try{
+    try {
         await newUser.save();
-    }catch(err){
+    } catch (err) {
         console.error(err);
         throw 'Обратитесь к администратору';
     }
-    
+
     return newUser;
 }
 
-async function getUserObjById (userId){
-    try{
+async function getUserObjById(userId) {
+    try {
         var user = await findUserById(userId);
-    }catch(err){
+    } catch (err) {
         throw err;
-    }    
+    }
 
-    if(!user){
+    if (!user) {
         throw 'Пользователь не найден';
     }
 
@@ -102,14 +122,14 @@ async function getUserObjById (userId){
     };
 }
 
-async function updateUserData (userId, obj){
-    try{
+async function updateUserData(userId, obj) {
+    try {
         var user = await findUserById(userId);
-    }catch(err){
+    } catch (err) {
         throw err;
-    } 
+    }
 
-    if(!user.validPassword(obj.oldPassword)){
+    if (!user.validPassword(obj.oldPassword)) {
         throw 'неверный старый пароль';
     }
 
@@ -124,22 +144,24 @@ async function updateUserData (userId, obj){
         password: genPassword.password
     }
 
-    try{
-        await User.findByIdAndUpdate({_id:userId},userUpdObj);
-    }catch(err){
+    try {
+        await User.findByIdAndUpdate({
+            _id: userId
+        }, userUpdObj);
+    } catch (err) {
         throw err;
     }
 
-    try{
+    try {
         userUpd = await getUserObjById(userId);
-    }catch(err){
+    } catch (err) {
         throw err;
-    }   
+    }
 
     return userUpd;
 }
 
-async function getAllUsers(){
+async function getAllUsers() {
     try {
         var users = await User.find({});
     } catch (error) {
@@ -148,7 +170,7 @@ async function getAllUsers(){
     return users;
 }
 
-async function getAllUsersObj(){
+async function getAllUsersObj() {
     try {
         var users = await getAllUsers();
     } catch (error) {
@@ -157,36 +179,40 @@ async function getAllUsersObj(){
 
     let usersObjArr = [];
 
-    for(let i=0;i<users.length;i++){
-        try{
+    for (let i = 0; i < users.length; i++) {
+        try {
             userObj = await getUserObjById(users[i]._id);
-        }catch(err){
+        } catch (err) {
             throw err;
-        } 
+        }
         usersObjArr.push(userObj);
     }
 
     return usersObjArr;
 }
 
-async function deleteUser(userId){
+async function deleteUser(userId) {
     try {
-        await User.findOneAndRemove({ _id: userId });
+        await User.findOneAndRemove({
+            _id: userId
+        });
     } catch (error) {
         throw 'обратитесь к администратору'
     }
 }
 
-async function updateUserPermission(userId,permissionObj){
-    try{
-        await User.findByIdAndUpdate({_id:userId},permissionObj);
-    }catch(err){
+async function updateUserPermission(userId, permissionObj) {
+    try {
+        await User.findByIdAndUpdate({
+            _id: userId
+        }, permissionObj);
+    } catch (err) {
         throw err;
     }
 
-    try{
+    try {
         var user = await getUserObjById(userId);
-    }catch(err){
+    } catch (err) {
         throw err;
     }
 
@@ -195,38 +221,38 @@ async function updateUserPermission(userId,permissionObj){
 
 /*----------------------------------------------------------------*/
 /*----------------Работа с News-----------------------------------*/
-function findNewsById (id){
+function findNewsById(id) {
     return News.findById(id);
 }
 
-async function getNewsObjById(newsId){
-    try{
+async function getNewsObjById(newsId) {
+    try {
         var news = await findNewsById(newsId);
-    }catch(err){
+    } catch (err) {
         throw err;
-    }    
+    }
 
-    if(!news){
+    if (!news) {
         throw 'Пользователь не найден';
     }
 
     return {
-            id: news._id,
-            created_at: news.created_at,
-            text: news.text,
-            title: news.title,
-            user: {
-                firstName: news.user.firstName,
-                id: news.user.id,
-                image: news.user.image,
-                middleName: news.user.middleName,
-                surName: news.user.surName,
-                username: news.user.username
-            }
+        id: news._id,
+        created_at: news.created_at,
+        text: news.text,
+        title: news.title,
+        user: {
+            firstName: news.user.firstName,
+            id: news.user.id,
+            image: news.user.image,
+            middleName: news.user.middleName,
+            surName: news.user.surName,
+            username: news.user.username
+        }
     };
 }
 
-async function getAllNews(){
+async function getAllNews() {
     try {
         var news = await News.find({});
     } catch (error) {
@@ -235,7 +261,7 @@ async function getAllNews(){
     return news;
 }
 
-async function getAllNewsObj(){
+async function getAllNewsObj() {
     try {
         var news = await getAllNews();
     } catch (error) {
@@ -244,20 +270,20 @@ async function getAllNewsObj(){
 
     let newsObjArr = [];
 
-    for(let i=0;i<news.length;i++){
-        try{
+    for (let i = 0; i < news.length; i++) {
+        try {
             newsObj = await getNewsObjById(news[i]._id);
-        }catch(err){
+        } catch (err) {
             throw err;
-        } 
+        }
         newsObjArr.push(newsObj);
     }
 
     return newsObjArr;
 }
 
-async function createNewNews(userId, title, text){
-    if(!text || !title ){
+async function createNewNews(userId, title, text) {
+    if (!text || !title) {
         throw 'Обязательые поля не заполнены';
     }
 
@@ -272,7 +298,7 @@ async function createNewNews(userId, title, text){
         created_at: new Date().toISOString(),
         text: text,
         title: title,
-        user:{
+        user: {
             firstName: user.firstName,
             id: user._id,
             image: user.image,
@@ -282,42 +308,137 @@ async function createNewNews(userId, title, text){
         }
     });
 
-    try{
+    try {
         await newNews.save();
-    }catch(err){
+    } catch (err) {
         console.error(err);
         throw 'Обратитесь к администратору';
     }
 }
 
-async function deleteNews(newsId){
+async function deleteNews(newsId) {
     try {
-        await News.findOneAndRemove({ _id: newsId });
+        await News.findOneAndRemove({
+            _id: newsId
+        });
     } catch (error) {
         throw 'обратитесь к администратору'
     }
 }
 
-async function updateNews(newsId, text, title){
+async function updateNews(newsId, text, title) {
 
     newsUpdObj = {
         text: text,
         title: title
     }
 
-    try{
-        await News.findByIdAndUpdate({_id:newsId},newsUpdObj);
-    }catch(err){
+    try {
+        await News.findByIdAndUpdate({
+            _id: newsId
+        }, newsUpdObj);
+    } catch (err) {
         throw err;
     }
 
-    try{
+    try {
         newsUpd = await getNewsObjById(newsId);
-    }catch(err){
+    } catch (err) {
         throw err;
-    }   
+    }
 
     return newsUpd;
+}
+
+/*----------------------------------------------------------------*/
+/*----------------Работа с Chat-----------------------------------*/
+async function createChatForUser(userId) {
+    let chatObj = new Chat({
+        userId: userId,
+        messanges: []
+    });
+
+    try {
+        await chatObj.save();
+    } catch (err) {
+        throw err;
+    }
+
+    return await findChatByUserId(userId);
+}
+
+async function findChatByUserId(userId) {
+    return Chat.findOne({
+        userId: userId
+    });
+}
+
+async function addNewMessange(userId, recipientId, text) {
+    try {
+        var chat = await findChatByUserId(userId);
+    } catch (err) {
+        throw err;
+    }
+
+    if (!chat) {
+        try {
+            chat = await createChatForUser(userId);
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    let objMessange = {
+        senderId: userId,
+        recipientId: recipientId,
+        text: text
+    };
+
+    let messObj = chat.messanges;
+
+    if (messObj.get(recipientId)) {
+        console.log(messObj.get(recipientId));
+        messObj.set(recipientId, messObj.get(recipientId).push(objMessange));
+    } else {
+        messObj.set(recipientId, []);
+        messObj.set(recipientId, messObj.get(recipientId).push(objMessange));
+    }
+
+    try {
+        await Chat.findByIdAndUpdate({
+            _id: chat._id
+        }, {
+            messanges: messObj
+        });
+    } catch (err) {
+        throw err;
+    }
+
+    return await findChatByUserId(userId);
+}
+
+async function getHistoryMessanges(userId, recipientId) {
+    try {
+        var chat = await findChatByUserId(userId);
+    } catch (err) {
+        throw err;
+    }
+
+    if (!chat) {
+        try {
+            chat = await createChatForUser(userId);
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    let messArray = chat.messanges.get(recipientId);
+
+    if (!messArray) {
+        messArray = [];
+    }
+
+    return messArray;
 }
 
 /*----------------------------------------------------------------*/
@@ -335,5 +456,8 @@ module.exports = {
     getAllNewsObj,
     createNewNews,
     deleteNews,
-    updateNews
+    updateNews,
+
+    addNewMessange,
+    getHistoryMessanges
 }
