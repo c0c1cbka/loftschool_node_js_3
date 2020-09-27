@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { tokensSelector, refreshTokenRequest, logout } from '../store/auth';
 import { openNotification } from '../store/notifications';
-const baseURL = 'http://localhost:3000/api/';
+const baseURL = 'https://shrouded-brook-43896.herokuapp.com/api/';
 const instance = axios.create({ baseURL });
 
 const waitQueue = [];

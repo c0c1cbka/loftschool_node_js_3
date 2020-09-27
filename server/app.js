@@ -31,5 +31,5 @@ app.use('*',(req,res)=>{
 });
 
 server.listen(process.env.PORT || PORT,()=>{
-    console.log(`server listen ${PORT}`);
+    console.log(`server listen ${process.env.PORT || PORT}`);
 });
