@@ -30,6 +30,6 @@ app.use('*',(req,res)=>{
     res.sendFile(file);
 });
 
-server.listen(PORT,()=>{
+server.listen(process.env.PORT || PORT,()=>{
     console.log(`server listen ${PORT}`);
 });

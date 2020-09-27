@@ -4,6 +4,7 @@
   "engines": {
     "node": "12.x"
   },
+  "description": "I study nodejs",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.3.3",
