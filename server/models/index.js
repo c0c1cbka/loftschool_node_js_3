@@ -129,7 +129,7 @@ async function updateUserData(userId, obj) {
         throw err;
     }
 
-    if (!user.validPassword(obj.oldPassword)) {
+    if (obj.newPassword && !user.validPassword(obj.oldPassword)) {
         throw 'неверный старый пароль';
     }
 

@@ -33,12 +33,18 @@ const patchProfile = async (req, res, next) => {
     try {
         form.parse(req, async (err, fields, files) => {
             if (err) {
-                throw 'Обратитесь к адмнистратору';
+                res.status(400).json({
+                    message: err
+                });
+                return;
             }
             let userUpdateObj = {};
 
             if (fields.newPassword != '' && fields.oldPassword == '') {
-                throw 'Для изменения пароля введите старый пароль'
+                res.status(400).json({
+                    message: 'Для изменения пароля введите старый пароль'
+                });
+                return;
             }
 
             if(files.avatar){
